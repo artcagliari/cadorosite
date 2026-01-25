@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Instagram, Mail } from "lucide-react";
 
@@ -33,11 +33,29 @@ const products: Product[] = [
   },
 ];
 
+const easeLuxury: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 const fadeInUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  transition: { duration: 1, ease: "easeOut" },
+  transition: { duration: 0.9, ease: easeLuxury },
   viewport: { once: true, amount: 0.3 },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeLuxury } },
 };
 
 type SectionProps = {
@@ -50,10 +68,10 @@ const MotionSection = ({ id, className, children }: SectionProps) => (
   <motion.section
     id={id}
     className={className}
-    initial={fadeInUp.initial}
-    whileInView={fadeInUp.whileInView}
-    transition={fadeInUp.transition}
-    viewport={fadeInUp.viewport}
+    variants={staggerContainer}
+    initial="hidden"
+    whileInView="show"
+    viewport={{ once: true, amount: 0.3 }}
   >
     {children}
   </motion.section>
@@ -66,7 +84,7 @@ export default function App() {
         className="relative min-h-screen"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        transition={{ duration: 1.1, ease: easeLuxury }}
       >
         <div
           className="absolute inset-0 bg-center bg-cover"
@@ -75,106 +93,161 @@ export default function App() {
               "url('https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=2000&q=80')",
           }}
         />
-        <div className="absolute inset-0 bg-primary/80" />
+        <div className="absolute inset-0 bg-black/15" />
         <div className="relative z-10 flex min-h-screen items-center">
-          <div className="mx-auto w-full max-w-5xl px-6 text-center lg:px-12">
+          <motion.div
+            className="mx-auto w-full max-w-5xl px-6 text-center sm:px-10 lg:px-14"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
             <motion.p
-              className="text-sm uppercase tracking-[0.3em] text-accent"
-              initial={fadeInUp.initial}
-              whileInView={fadeInUp.whileInView}
-              transition={{ duration: 1, delay: 0.1 }}
-              viewport={fadeInUp.viewport}
+              className="text-xs uppercase tracking-[0.4em] text-white/70"
+              variants={staggerItem}
             >
               Cadoro
             </motion.p>
             <motion.h1
-              className="mt-6 font-serif text-4xl leading-tight md:text-6xl"
-              initial={fadeInUp.initial}
-              whileInView={fadeInUp.whileInView}
-              transition={{ duration: 1.1, delay: 0.2 }}
-              viewport={fadeInUp.viewport}
+              className="mt-6 font-serif text-4xl leading-tight tracking-tight text-white md:text-6xl"
+              variants={staggerItem}
             >
               Silêncio que veste.
             </motion.h1>
             <motion.p
-              className="mx-auto mt-6 max-w-2xl text-base text-accent md:text-lg"
-              initial={fadeInUp.initial}
-              whileInView={fadeInUp.whileInView}
-              transition={{ duration: 1.1, delay: 0.3 }}
-              viewport={fadeInUp.viewport}
+              className="mx-auto mt-6 max-w-2xl text-base leading-loose text-white/75 md:text-lg"
+              variants={staggerItem}
             >
               Para quem entende que o verdadeiro luxo é sentido, não anunciado.
             </motion.p>
-            <motion.div
-              className="mt-10"
-              initial={fadeInUp.initial}
-              whileInView={fadeInUp.whileInView}
-              transition={{ duration: 1.1, delay: 0.4 }}
-              viewport={fadeInUp.viewport}
-            >
-              <button className="rounded-full border border-border px-8 py-3 text-sm uppercase tracking-widest text-primary transition duration-700 hover:border-accent hover:text-accent">
+            <motion.div className="mt-10" variants={staggerItem}>
+              <button className="rounded-full border border-white/40 px-9 py-3 text-xs uppercase tracking-[0.35em] text-white transition duration-700 hover:border-white/70 hover:bg-white/10">
                 Descobrir a Cadoro
               </button>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </motion.header>
 
       <main>
         <MotionSection id="concept" className="py-24">
-          <div className="mx-auto max-w-3xl px-6 text-center lg:px-12">
-            <p className="text-sm uppercase tracking-[0.3em] text-accent">
+          <div className="mx-auto max-w-3xl px-6 text-center sm:px-10 lg:px-14">
+            <motion.p
+              className="text-xs uppercase tracking-[0.35em] text-accent"
+              variants={staggerItem}
+            >
               Conceito
-            </p>
-            <h2 className="mt-6 font-serif text-3xl md:text-4xl">
+            </motion.p>
+            <motion.h2
+              className="mt-6 font-serif text-3xl tracking-tight md:text-4xl"
+              variants={staggerItem}
+            >
               Atemporal por natureza.
-            </h2>
-            <p className="mt-6 text-base leading-relaxed text-accent md:text-lg">
+            </motion.h2>
+            <motion.p
+              className="mt-6 text-base leading-loose text-accent md:text-lg"
+              variants={staggerItem}
+            >
               Cadoro nasce do respeito ao tempo. Criamos peças que atravessam
               estações, não tendências. A elegância não precisa se explicar; ela
               apenas permanece.
-            </p>
+            </motion.p>
+          </div>
+        </MotionSection>
+
+        <MotionSection id="about" className="py-24">
+          <div className="mx-auto grid max-w-6xl gap-12 px-6 sm:px-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:px-14">
+            <div>
+              <motion.p
+                className="text-xs uppercase tracking-[0.35em] text-accent"
+                variants={staggerItem}
+              >
+                A Marca
+              </motion.p>
+              <motion.h2
+                className="mt-6 font-serif text-3xl tracking-tight md:text-4xl"
+                variants={staggerItem}
+              >
+                Um legado de precisão, criado para durar.
+              </motion.h2>
+              <motion.p
+                className="mt-6 text-base leading-loose text-accent md:text-lg"
+                variants={staggerItem}
+              >
+                Cada peça Cadoro nasce em ateliers familiares no norte da Itália,
+                onde o tempo é tratado como matéria-prima. Trabalhamos com fibras
+                naturais de origem rastreável e acabamentos manuais que elevam a
+                sensação ao toque.
+              </motion.p>
+            </div>
+            <div className="rounded-[32px] border border-border bg-white/60 p-10 text-center">
+              <motion.p
+                className="text-xs uppercase tracking-[0.35em] text-accent"
+                variants={staggerItem}
+              >
+                Compromissos
+              </motion.p>
+              <motion.ul
+                className="mt-8 space-y-4 text-sm uppercase tracking-[0.3em] text-primary"
+                variants={staggerItem}
+              >
+                <li>Design Italiano</li>
+                <li>Lotes Limitados</li>
+                <li>Acabamento Manual</li>
+              </motion.ul>
+              <motion.p
+                className="mt-8 text-sm leading-relaxed text-accent"
+                variants={staggerItem}
+              >
+                Produções reduzidas para preservar o silêncio e a exclusividade
+                de cada coleção.
+              </motion.p>
+            </div>
           </div>
         </MotionSection>
 
         <MotionSection id="collection" className="py-24">
-          <div className="mx-auto max-w-6xl px-6 lg:px-12">
-            <div className="flex flex-col items-center text-center">
-              <p className="text-sm uppercase tracking-[0.3em] text-accent">
+          <div className="mx-auto max-w-6xl px-6 sm:px-10 lg:px-14">
+            <motion.div
+              className="flex flex-col items-center text-center"
+              variants={staggerItem}
+            >
+              <p className="text-xs uppercase tracking-[0.35em] text-accent">
                 Curadoria
               </p>
-              <h2 className="mt-6 font-serif text-3xl md:text-4xl">
+              <h2 className="mt-6 font-serif text-3xl tracking-tight md:text-4xl">
                 Peças essenciais, selecionadas a dedo.
               </h2>
-            </div>
-            <div className="mt-16 grid gap-10 md:grid-cols-3">
+            </motion.div>
+            <div className="mt-16 grid gap-12 md:grid-cols-3">
               {products.map((product, index) => (
                 <motion.article
                   key={product.id}
                   className="group relative overflow-hidden rounded-3xl border border-border bg-primary"
-                  initial={fadeInUp.initial}
-                  whileInView={fadeInUp.whileInView}
+                  variants={staggerItem}
                   transition={{
-                    duration: 1,
-                    delay: 0.15 * index,
-                    ease: "easeOut",
+                    duration: 0.9,
+                    delay: 0.1 * index,
+                    ease: easeLuxury,
                   }}
-                  viewport={fadeInUp.viewport}
                 >
                   <div className="relative aspect-[3/4] overflow-hidden">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+                      className="h-full w-full object-cover transition duration-1000 ease-out group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black/10 opacity-0 transition duration-700 group-hover:opacity-100" />
-                    <button className="absolute bottom-6 left-6 right-6 translate-y-2 rounded-full border border-border bg-primary/80 px-6 py-2 text-xs uppercase tracking-widest text-primary opacity-0 transition duration-700 group-hover:translate-y-0 group-hover:opacity-100">
-                      Ver Detalhes
-                    </button>
+                    <div className="absolute bottom-6 left-6 right-6 translate-y-3 opacity-0 transition duration-700 group-hover:translate-y-0 group-hover:opacity-100">
+                      <button className="w-full rounded-full border border-border bg-primary/80 px-6 py-2 text-xs uppercase tracking-[0.35em] text-primary transition duration-700 hover:bg-primary">
+                        Ver Detalhes
+                      </button>
+                    </div>
                   </div>
                   <div className="px-6 py-6">
-                    <h3 className="font-serif text-xl">{product.name}</h3>
-                    <p className="mt-2 text-sm uppercase tracking-[0.25em] text-accent">
+                    <h3 className="font-serif text-xl tracking-tight">
+                      {product.name}
+                    </h3>
+                    <p className="mt-2 text-xs uppercase tracking-[0.35em] text-accent">
                       {product.material}
                     </p>
                   </div>
@@ -186,10 +259,10 @@ export default function App() {
       </main>
 
       <MotionSection className="border-t border-border py-16">
-        <footer className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 text-center lg:flex-row lg:justify-between lg:px-12 lg:text-left">
+        <footer className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 text-center sm:px-10 lg:flex-row lg:justify-between lg:px-14 lg:text-left">
           <div>
-            <p className="font-serif text-2xl">Cadoro</p>
-            <p className="mt-2 text-sm text-accent">
+            <p className="font-serif text-2xl tracking-tight">Cadoro</p>
+            <p className="mt-2 text-sm leading-relaxed text-accent">
               Elegância que permanece em silêncio.
             </p>
           </div>
