@@ -1,4 +1,4 @@
-import React, { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Instagram, Mail } from "lucide-react";
 
@@ -34,13 +34,6 @@ const products: Product[] = [
 ];
 
 const easeLuxury: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  transition: { duration: 0.9, ease: easeLuxury },
-  viewport: { once: true, amount: 0.3 },
-};
 
 const staggerContainer = {
   hidden: { opacity: 0 },
